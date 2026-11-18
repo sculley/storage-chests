@@ -56,7 +56,11 @@
       },
       "minecraft:fire_immune": {},
       "minecraft:persistent": {},
-      "minecraft:conditional_bandwidth_optimization": {}
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:nameable": {
+        "always_show": false,
+        "allow_name_tag_renaming": false
+      }
     }
   }
 }

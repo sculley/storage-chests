@@ -27,6 +27,7 @@ Grab **`Storage_Chests-x.y.z.mcaddon`** from the [latest release](https://github
 - **Easy to craft**: two iron ingots and a chest. No shulker shells, no End city.
 - **27 slots**: the same size as a chest or a shulker box.
 - **16 colours**: use any dye on a placed chest to colour it, and a water bucket to wash it back. The colour stays when you pick it up.
+- **Name it**: rename a chest on an anvil and its screen shows that name, like a named shulker box. The name stays when you pick it up.
 - **Tough**: storage chests don't burn, can't be blown up and aren't pushed by pistons. You can stand on them.
 - **No nesting**: a storage chest can't be carried inside another one. If you pick one up with another inside, the inner one pops out.
 - **Storage Chests Guide**: every player gets one on first join. It explains everything, including the recipes, in-game.
@@ -98,6 +99,7 @@ Built on the stable Script API: `@minecraft/server` 2.9.0 and `@minecraft/server
 - **Picking up:** hitting it (`world.afterEvents.entityHitEntity`) saves the chest entity, with its inventory, into a structure using `world.structureManager`. The structure's name is stored on the dropped item as a dynamic property (`stc:contents`), and the chest is removed. Structures keep items exactly, so nothing about them is lost.
 - **Placing:** the item's `stc:storage_chest` custom component (`onUseOn`) places the structure back on the block face you used it on, then deletes the structure. An empty chest item just spawns a new chest.
 - **Colours:** one entity with an int property `stc:colour` (0 = undyed, 1–16 = dye order). The render controller picks the texture from it. Each colour has its own item so a carried chest shows its colour.
+- **Screen title:** entities have no display name, so the chest screen shows the entity's name tag. Every chest is given one (`Storage Chest`, or the item's anvil name), and `minecraft:nameable` keeps it from showing unless you look right at the chest.
 - **Dyeing:** `world.beforeEvents.playerInteractWithEntity` cancels the inventory opening when you're holding a dye or water bucket, and sets the colour instead.
 
 **Build locally**

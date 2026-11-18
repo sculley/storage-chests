@@ -12,6 +12,8 @@ export const CHEST = "stc:storage_chest";
 const COLOUR = "stc:colour"; // entity property
 const CONTENTS = "stc:contents"; // item dynamic property: name of the structure holding its items
 const PENDING = "stc:pending"; // entity dynamic property: set while it is being packed or unpacked
+// Entities have no display name of their own, so the chest screen's title comes from the name tag.
+export const DEFAULT_NAME = "Storage Chest";
 
 const FACE = { Up: [0, 1, 0], Down: [0, -1, 0], North: [0, 0, -1], South: [0, 0, 1], East: [1, 0, 0], West: [-1, 0, 0] };
 const busy = new Set();
@@ -43,11 +45,12 @@ function useUpHeld(player, typeId) {
   }
 }
 
-/** Turn a chest to face the player, centre it in its block and paint it. */
-function settle(chest, cell, player, colour) {
+/** Turn a chest to face the player, centre it in its block, paint and name it. */
+function settle(chest, cell, player, colour, name) {
   const yaw = Math.round(player.getRotation().y / 90) * 90 + 180;
   chest.teleport(centre(cell), { rotation: { x: 0, y: yaw } });
   chest.setProperty(COLOUR, colour);
+  chest.nameTag = name || DEFAULT_NAME; // an item renamed on an anvil names the chest
   chest.setDynamicProperty(PENDING, undefined);
 }
 
@@ -67,6 +70,7 @@ export function place(player, block, blockFace, item) {
 
   const colour = colourOfItem(item.typeId);
   const id = item.getDynamicProperty(CONTENTS);
+  const name = item.nameTag;
 
   if (typeof id === "string" && world.structureManager.get(id)) {
     try {
@@ -84,14 +88,14 @@ export function place(player, block, blockFace, item) {
       const chest = dimension
         .getEntities({ type: CHEST, location: centre(cell), maxDistance: 3 })
         .find((e) => e.getDynamicProperty(PENDING) === id);
-      if (chest) settle(chest, cell, player, colour);
+      if (chest) settle(chest, cell, player, colour, name);
     });
     return;
   }
   if (typeof id === "string") say(player, "§eThis chest's contents couldn't be found, so it's empty.");
   useUpHeld(player, item.typeId);
   dimension.playSound("dig.stone", centre(cell));
-  settle(dimension.spawnEntity(CHEST, centre(cell)), cell, player, colour);
+  settle(dimension.spawnEntity(CHEST, centre(cell)), cell, player, colour, name);
 }
 
 /** Hit a placed chest: it drops as an item with everything still inside. */
@@ -105,6 +109,7 @@ export function pickUp(player, chest) {
   const cell = floor(chest.location);
   const dropAt = centre(cell);
   const item = new ItemStack(itemFor(chest.getProperty(COLOUR) ?? 0), 1);
+  if (chest.nameTag && chest.nameTag !== DEFAULT_NAME) item.nameTag = chest.nameTag;
 
   // A storage chest can't be carried inside another one: those come out first.
   let stacks = 0;

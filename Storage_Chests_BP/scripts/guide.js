@@ -76,6 +76,7 @@ const CHAPTERS = [
     body: [
       "• Hoppers and comparators don't connect to storage chests.",
       "• An empty chest broken in Creative doesn't drop, like a shulker box.",
+      "• Rename a chest on an anvil and its screen shows that name. The name stays when you pick it up.",
       "• If a chest item is lost (burnt, despawned), its items are lost too - keep it safe like a shulker box.",
       "• Lost this book? Craft another from a Book and a Chest.",
     ],
