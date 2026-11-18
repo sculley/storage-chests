@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Storage Chests Resources",
+    "description": "Textures, model and names for Storage Chests.",
+    "uuid": "4df2188a-5d58-4975-a755-dd7081bb1ce3",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      40
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "0dd0b342-4af3-4ddd-8833-9f1932a7d8c9",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

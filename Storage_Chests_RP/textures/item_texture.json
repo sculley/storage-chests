@@ -1,0 +1,60 @@
+{
+  "resource_pack_name": "storage_chests",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "stc_undyed_storage_chest": {
+      "textures": "textures/items/stc_undyed_storage_chest"
+    },
+    "stc_white_storage_chest": {
+      "textures": "textures/items/stc_white_storage_chest"
+    },
+    "stc_orange_storage_chest": {
+      "textures": "textures/items/stc_orange_storage_chest"
+    },
+    "stc_magenta_storage_chest": {
+      "textures": "textures/items/stc_magenta_storage_chest"
+    },
+    "stc_light_blue_storage_chest": {
+      "textures": "textures/items/stc_light_blue_storage_chest"
+    },
+    "stc_yellow_storage_chest": {
+      "textures": "textures/items/stc_yellow_storage_chest"
+    },
+    "stc_lime_storage_chest": {
+      "textures": "textures/items/stc_lime_storage_chest"
+    },
+    "stc_pink_storage_chest": {
+      "textures": "textures/items/stc_pink_storage_chest"
+    },
+    "stc_gray_storage_chest": {
+      "textures": "textures/items/stc_gray_storage_chest"
+    },
+    "stc_light_gray_storage_chest": {
+      "textures": "textures/items/stc_light_gray_storage_chest"
+    },
+    "stc_cyan_storage_chest": {
+      "textures": "textures/items/stc_cyan_storage_chest"
+    },
+    "stc_purple_storage_chest": {
+      "textures": "textures/items/stc_purple_storage_chest"
+    },
+    "stc_blue_storage_chest": {
+      "textures": "textures/items/stc_blue_storage_chest"
+    },
+    "stc_brown_storage_chest": {
+      "textures": "textures/items/stc_brown_storage_chest"
+    },
+    "stc_green_storage_chest": {
+      "textures": "textures/items/stc_green_storage_chest"
+    },
+    "stc_red_storage_chest": {
+      "textures": "textures/items/stc_red_storage_chest"
+    },
+    "stc_black_storage_chest": {
+      "textures": "textures/items/stc_black_storage_chest"
+    },
+    "stc_guide": {
+      "textures": "textures/items/stc_guide"
+    }
+  }
+}

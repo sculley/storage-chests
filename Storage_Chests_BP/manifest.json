@@ -1,0 +1,58 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Storage Chests",
+    "description": "Dyeable storage chests that keep their items when you pick them up. No trip to the End needed.",
+    "uuid": "f7143e5d-020b-4129-930e-3ac9f85ebf22",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      40
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "89c64fab-7d2d-441e-a6a6-dddf989fad93",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "ad1968f0-fec1-4cbb-82c3-ae5cbc0b25c8",
+      "entry": "scripts/main.js",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.9.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.1.0"
+    },
+    {
+      "uuid": "4df2188a-5d58-4975-a755-dd7081bb1ce3",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

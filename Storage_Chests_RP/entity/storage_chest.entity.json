@@ -1,0 +1,36 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "stc:storage_chest",
+      "materials": {
+        "default": "entity"
+      },
+      "textures": {
+        "undyed": "textures/entity/storage_chest/undyed",
+        "white": "textures/entity/storage_chest/white",
+        "orange": "textures/entity/storage_chest/orange",
+        "magenta": "textures/entity/storage_chest/magenta",
+        "light_blue": "textures/entity/storage_chest/light_blue",
+        "yellow": "textures/entity/storage_chest/yellow",
+        "lime": "textures/entity/storage_chest/lime",
+        "pink": "textures/entity/storage_chest/pink",
+        "gray": "textures/entity/storage_chest/gray",
+        "light_gray": "textures/entity/storage_chest/light_gray",
+        "cyan": "textures/entity/storage_chest/cyan",
+        "purple": "textures/entity/storage_chest/purple",
+        "blue": "textures/entity/storage_chest/blue",
+        "brown": "textures/entity/storage_chest/brown",
+        "green": "textures/entity/storage_chest/green",
+        "red": "textures/entity/storage_chest/red",
+        "black": "textures/entity/storage_chest/black"
+      },
+      "geometry": {
+        "default": "geometry.stc_storage_chest"
+      },
+      "render_controllers": [
+        "controller.render.stc_storage_chest"
+      ]
+    }
+  }
+}
