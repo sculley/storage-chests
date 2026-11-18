@@ -5,12 +5,13 @@
 // structure's name goes on the dropped item. Placing that item puts the structure back. Structures keep
 // items exactly, enchantments, names and all.
 
-import { EquipmentSlot, ItemStack, StructureSaveMode, system, world } from "@minecraft/server";
+import { EquipmentSlot, ItemStack, StructureRotation, StructureSaveMode, system, world } from "@minecraft/server";
 import { CHEST_ITEMS, colourOfDye, colourOfItem, itemFor } from "./colours.js";
 
 export const CHEST = "stc:storage_chest";
 const COLOUR = "stc:colour"; // entity property
 const CONTENTS = "stc:contents"; // item dynamic property: name of the structure holding its items
+const YAW = "stc:yaw"; // item dynamic property: which way the packed chest was facing
 const PENDING = "stc:pending"; // entity dynamic property: set while it is being packed or unpacked
 // Entities have no display name of their own, so the chest screen's title comes from the name tag.
 export const DEFAULT_NAME = "Storage Chest";
@@ -45,10 +46,20 @@ function useUpHeld(player, typeId) {
   }
 }
 
-/** Turn a chest to face the player, centre it in its block, paint and name it. */
-function settle(chest, cell, player, colour, name) {
-  const yaw = Math.round(player.getRotation().y / 90) * 90 + 180;
-  chest.teleport(centre(cell), { rotation: { x: 0, y: yaw } });
+const TURNS = [StructureRotation.None, StructureRotation.Rotate90, StructureRotation.Rotate180, StructureRotation.Rotate270];
+const quarter = (yaw) => (((Math.round(yaw / 90) % 4) + 4) % 4); // 0-3 quarter turns
+
+/** The way a new chest should face: its latch towards the player. */
+const facing = (player) => quarter(player.getRotation().y + 180) * 90;
+
+/** Paint and name a placed chest. It's already facing the right way, so it isn't moved. */
+function settle(chest, cell, colour, name) {
+  // Only nudge it if it came out of a structure off-centre; never turn it, which shows as a spin.
+  const at = chest.location;
+  const want = centre(cell);
+  if (Math.abs(at.x - want.x) > 0.05 || Math.abs(at.z - want.z) > 0.05 || Math.abs(at.y - want.y) > 0.05) {
+    chest.teleport(want, { keepVelocity: false });
+  }
   chest.setProperty(COLOUR, colour);
   chest.nameTag = name || DEFAULT_NAME; // an item renamed on an anvil names the chest
   chest.setDynamicProperty(PENDING, undefined);
@@ -72,9 +83,13 @@ export function place(player, block, blockFace, item) {
   const id = item.getDynamicProperty(CONTENTS);
   const name = item.nameTag;
 
+  const yaw = facing(player);
   if (typeof id === "string" && world.structureManager.get(id)) {
+    // Turn the structure so the chest comes out already facing the player.
+    const saved = item.getDynamicProperty(YAW);
+    const rotation = TURNS[quarter(yaw - (typeof saved === "number" ? saved : 0))];
     try {
-      world.structureManager.place(id, dimension, cell, { includeBlocks: false, includeEntities: true });
+      world.structureManager.place(id, dimension, cell, { includeBlocks: false, includeEntities: true, rotation });
     } catch (error) {
       // Keep the item (and so the structure) if the chest couldn't be put back.
       console.warn(`[Storage Chests] couldn't unpack a chest: ${error}`);
@@ -88,14 +103,14 @@ export function place(player, block, blockFace, item) {
       const chest = dimension
         .getEntities({ type: CHEST, location: centre(cell), maxDistance: 3 })
         .find((e) => e.getDynamicProperty(PENDING) === id);
-      if (chest) settle(chest, cell, player, colour, name);
+      if (chest) settle(chest, cell, colour, name);
     });
     return;
   }
   if (typeof id === "string") say(player, "§eThis chest's contents couldn't be found, so it's empty.");
   useUpHeld(player, item.typeId);
   dimension.playSound("dig.stone", centre(cell));
-  settle(dimension.spawnEntity(CHEST, centre(cell)), cell, player, colour, name);
+  settle(dimension.spawnEntity(CHEST, centre(cell), { initialRotation: yaw }), cell, colour, name);
 }
 
 /** Hit a placed chest: it drops as an item with everything still inside. */
@@ -145,6 +160,7 @@ export function pickUp(player, chest) {
         return say(player, "§cThat storage chest couldn't be picked up. Try again.");
       }
       item.setDynamicProperty(CONTENTS, id);
+      item.setDynamicProperty(YAW, quarter(chest.getRotation().y) * 90);
       item.setLore([`§7${stacks} stack${stacks === 1 ? "" : "s"} inside`]);
     }
     chest.remove();
